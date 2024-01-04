@@ -1,0 +1,54 @@
+{% extends "store/base.html" %}
+
+{% load static %}
+
+{% block body %}
+<div class="container">
+    <div class="row mt-5 text-center text-dark">
+        <div class="col-12 col-md-3 col-sm-12 card bg-info">
+            <p>Total Orders - {{total_orders}}</p>
+        </div>
+        <div class="col-12 col-md-3 col-sm-12 card bg-warning">
+            <p>Total Spend - {{total_spend.total_amount__sum}}</p>
+        </div>  
+        <div class="col-12 col-md-3 col-sm-12 card bg-success">
+            <p>Total Delivered - {{total_delivered}}</p>
+        </div>
+        <div class="col-12 col-md-3 col-sm-12 card bg-danger">
+            <p>Due Delivered - {{total_pending|safe}}</p>
+        </div>
+    </div>
+
+    <div class=" mt-5">
+        <div class="">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Payment Status</th>
+                        <th>Delivery Status</th>
+                        <th>Order Invoice</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td>{{order.order_id}}</td>
+                        <td>{{order.created_at}}</td>
+                        <td>{{order.payment_status}}</td>
+                        <td>{{order.payment_status}}</td>
+                        <td><a target="__blank" href="{{order.invoice.url}}" class="btn btn-info">View</a></td>
+                    </tr>
+                    {% endfor %}
+                    
+                </tbody>
+            </table>
+        </div>
+</div>
+    
+
+</div>
+
+
+{% endblock %}

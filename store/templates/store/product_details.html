@@ -1,0 +1,167 @@
+
+{% extends 'store/base.html' %}
+
+{% load static %}
+
+{% block body %}
+
+<div class="container">
+
+    <main class="pt-5">
+
+        <div class="row g-3">
+
+            <div class="col-md-5 col-lg-5 order-md-first bg-light">
+            
+                <img class="img-fluid mx-auto d-block" alt="Responsive image" src="{{product.image.url}}"> <!-- Product image -->
+            
+            </div>
+
+            <div class="col-md-7 col-lg-7 ps-md-3 ps-lg-5">
+
+                <h1 class="mb-0 h4"> {{product.name}}  </h1>
+
+                <strong> {{product.brand}} </strong>
+
+
+                <hr>
+
+                <br>
+
+
+                <p> {{product.description}} </p>
+
+                <div class="border">
+
+                    <div class="col border-bottom">
+
+                        <div class="row p-3">
+
+                            <div class="col-6"> Price </div>
+
+                            <div class="col-6 text-end"><span class="h4 fw-bold">$ {{product.price}} </span></div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col">
+              
+                        
+              
+                            
+                            <form id="post-form">
+                            <div class="row p-3">
+                                {% csrf_token %}  
+                            <div class="col-6">
+              
+                               
+                                <label for="select">Qty</label>
+                                
+                                &nbsp; 
+                               
+                                <select id="select">
+              
+                                    <option value="1">1</option>
+              
+                                    <option value="2">2</option>
+              
+                                    <option value="3">3</option>
+              
+                                    <option value="4">4</option>
+              
+                                </select>
+                                <input type="hidden" id="prod_id" value="{{product.id}}" name="prod_id">
+                                
+                                 
+
+                            </div>
+                            <button type="submit" class="btn btn-secondary btn-sm">
+                        
+                                Add to cart 
+                            
+                                </button> 
+                            
+                            </div>
+                            </form>
+                            
+                                
+                        
+                        
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <br>
+
+</div>
+
+
+<script type="text/javascript">
+        $(document).on("submit","#post-form",function(e){
+            e.preventDefault()
+             var prod_id = $("#prod_id").val();
+
+            var qty = $("#select").val(); 
+
+            
+            $.ajax({
+                type:'POST',
+                url:'{% url "add_to_cart" %}',
+                data:{
+                    prod_id: prod_id,
+                    qty: qty,
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+                success:function(data){
+                   var cart = JSON.parse(data.length)
+                   document.getElementById("cart-qnt").innerHTML = cart
+                }
+                
+                
+            })
+           
+        
+        })
+    </script>
+
+
+
+{% comment %} <script  type="text/javascript">
+        $(document).on("submit","#post-form",function(e){
+
+            e.preventDefault();
+
+            var prod_id = $("#prod_id")
+
+            var qty = $("#select");
+
+            $.ajax({
+            alert("Product added to cart");
+                url: "{% url 'add_to_cart' %}",
+                type: "POST",
+                data: {
+                    prod_id: prod_id,
+                    qty: qty,
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+                success:function(response){     
+                        alert("Product added to cart");
+                }
+            });
+
+        });
+</script> {% endcomment %}
+
+
+
+
+
+{% endblock body %}

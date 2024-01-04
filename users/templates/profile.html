@@ -1,0 +1,76 @@
+{% extends "store/base.html" %}
+
+{% load static %}
+
+{% block body %}
+<div class="container">
+    <div class="row justify-content-center">
+            <h2 class="text-center">{{user.profile.name}}'s Profile</h2>
+    </div>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>{{message}}</strong> 
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center">
+                    <a  href="{% url 'update_profile' %}" class="btn mr-3 btn-warning btn-sm text-center">Update Profile</a>
+                    <a  href="{% url 'orders' %}" class="btn btn-success mr-3 btn-sm text-center">My Orders</a>
+                    <a  href="{% url 'logout' %}" class="btn btn-danger btn-sm text-center">logout</a>
+
+                </div>  
+                <div class="col-md-3 border-right">
+                    <h4>Photo</h4>
+                    <hr>
+                    <img src="{{user.profile.image.url}}" alt="profile image" class="img-fluid w-75 rounded">
+                    <hr>
+                    
+                </div>
+                <div class="col-md-9">
+                    <h4>Account Details</h4>
+                    <hr>
+                    <table class="table table-sm table-borderless">
+                        <tbody>
+                            <tr>
+                                <th>Username</th>
+                                <td>{{user.username}}</td>
+                            </tr>
+                            <tr>
+                                <th>Full Name</th>
+                                <td>{{user.profile.name}}</td>
+                            </tr>
+                            <tr>
+                                <th>Email</th>
+                                <td>{{user.email}}</td>
+                            </tr>
+                            <tr>
+                                <th>Phone</th>
+                                <td>{{user.profile.phone}}</td>
+                            </tr>
+                            <tr>
+                                <th>Address</th>
+                                <td>{{user.profile.address}}</td>
+                            </tr>
+                
+                            
+                        </tbody>
+                    </table>
+                    <hr>
+                    
+                </div>
+                
+                
+            </div>
+        </div>
+    </div>
+    
+</div>
+{% endblock %}

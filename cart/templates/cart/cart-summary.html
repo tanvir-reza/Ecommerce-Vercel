@@ -1,0 +1,147 @@
+{% extends "store/base.html" %}
+
+
+{% load static %}
+
+
+{% block body %}
+
+
+<main class="pt-5">
+    
+    <div class="container">
+      
+     {% if length > 0 %}
+      <h1 class="h5 ms-auto"> Shopping cart </h1>
+
+      <div class="text-end ml-auto">
+ 
+        <div class="h6 fw-bold"> Sub total: $ {{product_price}}<div id="total" class="d-inline-flex"> <!-- cart.get_total --> </div></div>
+ 
+      </div>
+
+	<hr>
+      
+      <br>
+
+
+      {% for item in cart_items %}
+
+  
+      <div class="row mb-4 border product-item">
+        
+        <div class="col-md-3 col-lg-2 order-md-first bg-light">
+        
+            <img class="img-fluid mx-auto d-block w-50"  alt="Responsive image" src="{{item.product.image.url}}"> <!-- Product image -->
+        
+        </div>
+
+        
+        <div class="col-md-9 col-lg-10 ">
+          
+          <a href="" class="text-decoration-none text-reset"> <!-- Product get absolute url -->
+          
+            <h1 class="h5 pt-2"> {{item.product.name}} </h1>
+          
+          </a>
+          
+          <div class="border">
+            
+            <div class="col border-bottom">
+              
+                <div class="row p-3">
+              
+                <div class="col-6"> Product </div>
+              
+                <div class="col-6 text-end"><span class="h6 fw-bold">$ {{item.product.price}} </span></div>
+            
+              </div>
+            
+            </div>
+            
+            <div class="col">
+              
+              <div class="row p-3">
+                
+                <div class="col-12">
+                  
+                  <label for="select">Qty</label>
+
+                  &nbsp; 
+                  
+                  <h3 class="d-inline-flex"> {{item.quantity}} </h3>
+                  
+                  <br> <br>
+
+            
+                  
+                  &nbsp;
+                   
+
+                  <a a="button" href="#" data-product-id="{{ item.product.id }}" 
+                    class="btn btn-danger btn-sm delete-button">
+                    Delete
+                </a>
+        
+
+                </div>
+        
+            </div>
+        
+            </div>
+    
+            </div>
+    
+        </div>
+      
+    </div>
+      
+{% endfor %}
+    {% else %}
+    <div class="text-center mb-5">
+            <h2 class="my-4">Your Cart is Empty</h2>
+            <a href="{% url 'home' %}" class="btn btn-primary">Continue Shopping</a>
+    </div>
+     {% endif %}
+
+
+    </div>
+  
+
+ </main class="mb-5">
+
+
+ <script type="text/javascript">
+  $(document).ready(function() {
+        $('.delete-button').click(function(e) {
+            e.preventDefault()
+             var prod_id = $(this).data('product-id');
+
+
+            
+            $.ajax({
+                type:'POST',
+                url:'{% url "delete_cart" %}',
+                data:{
+                    prod_id: prod_id,
+                },
+                success:function(data){
+                   var cart = JSON.parse(data.length)
+                   document.getElementById("cart-qnt").innerHTML = cart
+                   location.reload(); // Add this line to reload the page
+                }
+                
+                
+            })
+           
+        
+        })
+    })
+    </script>
+
+
+
+
+
+{% endblock %}
+

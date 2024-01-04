@@ -1,0 +1,96 @@
+{% extends "store/base.html" %}
+
+
+{% load static %}
+
+
+{% block body %}
+
+<main class="pt-5">
+<div class="container">
+    {% if cart_count > 0  %}
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <h2 class="my-4">Your Order</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                    <tr>
+                        <td>{{item.product.name}}</td>
+                        <td>{{item.quantity}} </td>
+                        <td>{{item.product.price}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h4 class="text-right">Total: {{product_price}}</h4>
+
+            
+        </div>
+        <div class="col-md-6">
+            <h2 class="my-4">Checkout</h2>
+
+            <div class="card">
+                <div class="card-body">
+                    <p>Name : <strong>{{user.profile.name}}</strong></p>
+                    <p>Phone Number : {{user.profile.phone}}</p>
+                </div>
+            </div>
+            <form id="post-form" method="post" action='{% url "payment" %} '>
+                {% csrf_token %}
+                {% comment %} shipping address {% endcomment %}
+                <div class="form-group">
+                    <label for="shipping_address">Shipping Address</label>
+                    <textarea class="form-control" id="shipping_address"  name="shipping_address" rows='7'></textarea>
+                </div>
+                <!-- select payment method -->
+                <div class="form-group">
+                    <label for="payment">Payment Method</label>
+                    <select class="form-control" name="payment" id="payment">
+                        <option selected>Select payment method</option>
+                        <option value="cash">Cash</option>
+                        <option value="ssl">SSL-COMMERZ</option>
+                    </select>
+                </div>
+                <button id="sumit" type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+    {% else %}
+        <div class="text-center mb-5">
+            <h2 class="my-4">Your Cart is Empty</h2>
+            <a href="{% url 'home' %}" class="btn btn-primary">Continue Shopping</a>
+        </div>
+    {% endif %}
+</div>
+</main>
+
+
+<script>
+    var s_address = document.getElementById("shipping_address");
+    var payment = document.getElementById("payment");
+    var form = document.getElementById("post-form");
+
+        form.addEventListener("submit", function(event) {
+            if (s_address.value == "") {
+                alert("Shipping address must be filled out");
+                event.preventDefault();
+            }
+            if (payment.value == "Select payment method") {
+                alert("Select payment method");
+                event.preventDefault();
+            }
+        });
+
+</script>
+
+
+{% endblock body %}
+

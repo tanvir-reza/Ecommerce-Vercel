@@ -1,0 +1,44 @@
+{% extends "store/base.html" %}
+
+{% load static %}
+
+{% block body %}
+   <div class="container">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>{{message}}</strong> 
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="row justify-content-center">
+            <h2 class="text-center">Login</h2>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form method="POST" action="{% url "login" %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+
+                New User? <a href="{% url "signup" %}">Signup</a>
+                <br>
+                
+                <button type="submit" class="btn btn-primary justify-content-center">Login</button>
+
+                
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
